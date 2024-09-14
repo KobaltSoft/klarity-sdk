@@ -1,4 +1,4 @@
-declare module "@klarity-sdk" {
+declare module "klarity-sdk" {
   export interface AudioTranscriptionSDKOptions {
     socketUrl: string;
     api_key: string;
