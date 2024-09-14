@@ -1,2 +1,2 @@
-import AudioTranscriptionSDK from "./lib/AudioTranscriptionSDK";
-export = AudioTranscriptionSDK;
+import KlaritySDK from "./lib/api";
+export = KlaritySDK;

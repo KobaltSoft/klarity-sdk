@@ -1,6 +1,6 @@
 /**
- * @type {import('./lib/AudioTranscriptionSDK').default}
+ * @type {import('./lib/api').default}
  */
-const AudioTranscriptionSDK = require("./lib/AudioTranscriptionSDK");
+const KlaritySDK = require("./lib/api");
 
-module.exports = AudioTranscriptionSDK;
+module.exports = KlaritySDK;
