@@ -1,6 +1,5 @@
 declare module "klarity-sdk" {
   export interface AudioTranscriptionSDKOptions {
-    socketUrl: string;
     api_key: string;
     connectionId?: string;
     contextLength: number;
