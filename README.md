@@ -1,9 +1,4 @@
 # @klarity-sdk
 
+A speech to text powerful sdk for node js.
 
-``` Installation Command ```
-
-```
-npm i git+ssh://git@github.com:ypratham/klarity-sdk.git
-
-```
