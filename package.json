@@ -1,0 +1,32 @@
+{
+  "name": "@klarity-sdk",
+  "version": "1.0.0",
+  "description": "A secure and rohbust SDK for audio transcription.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "javascript-obfuscator": "^4.1.1",
+    "socket.io-client": "^4.7.5",
+    "uuid": "^10.0.0"
+  },
+  "keywords": [
+    "stt",
+    "sdk",
+    "node",
+    "js",
+    "fast-stt"
+  ],
+  "author": "Klarity",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.5.5"
+  }
+}
