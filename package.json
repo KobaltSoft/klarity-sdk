@@ -23,7 +23,9 @@
     "js",
     "fast-stt"
   ],
-  "author": "Klarity",
+  "author": {
+    "name": "Klarity"
+  },
   "license": "ISC",
   "repository": {
     "type": "git",
