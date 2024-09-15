@@ -1,6 +1,6 @@
 {
   "name": "klarity-stt",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "A secure and rohbust SDK for audio transcription.",
   "main": "index.js",
   "types": "index.d.ts",
