@@ -1,6 +1,6 @@
 {
-  "name": "klarity-sdk",
-  "version": "1.0.3",
+  "name": "klarity-stt",
+  "version": "1.0.0",
   "description": "A secure and rohbust SDK for audio transcription.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -8,9 +8,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "socket.io-client": "^4.7.5",
