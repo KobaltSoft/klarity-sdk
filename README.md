@@ -1,232 +1,165 @@
 
-  
-
 # Klarity STT SDK
 
-  
-
 A powerful Node.js Speech-to-Text SDK with real-time transcription and advanced features.
+ 
 
+## Contact for API Access
 
-  
-  ##  Contact for API Access
-  For API key requests or further assistance, please contact the Klarity.
-  Email: admin@klarity.in
-  
+For API key requests or further assistance, please contact the Klarity.
+
+Email: admin@klarity.in
+
 
 ## Features
 
+  
+
 - Real-time audio transcription from streaming audio input
+
+  
 
 - Configurable context length for improved transcription accuracy
 
+  
+
 - Text mining capabilities
+
+  
 
 - Flexible error handling and callback system
 
+  
+
 - Support for long-running audio streams
+
+  
 
 - Efficient audio buffer management
 
-  
-
 ## Installation
 
-  
+To install the Audio Transcription SDK, use npm:
 
 ```bash
-
-npm  install  klarity-stt
-
+npm install klarity-stt
 ```
-
-  
 
 ## Usage
 
-  
+### Initialization
+
+First, import and initialize the SDK:
 
 ```javascript
+const KlaritySDK = require('klarity-tts');
 
-const  KlaritySDK  =  require('klarity-stt');
-
-  
-
-const  sdk  =  new  KlaritySDK ({
-
-api_key: 'YOUR_API_KEY',
-
-connectionId: 'optional-custom-id',
-
-contextLength: 3,
-
-debug: true
-
+const sdk = new KlaritySDK({
+  api_key: 'YOUR_API_KEY',
+  contextLength: 5,
 });
-
-  
-
-sdk.onTranscription((transcription) => {
-
-console.log('Transcription:', transcription);
-
-});
-
-  
-
-sdk.onQuestion(({ transcript, questions }) => {
-
-console.log('Transcript:', transcript);
-
-console.log('Generated Questions:', questions);
-
-});
-
-  
-
-sdk.onError((error) => {
-
-console.error('Error:', error);
-
-});
-
-  
-
-sdk.init();
-
-  
-
-// Start sending audio data
-
-const  audioChunk  =  Buffer.from(/* your audio data */);
-
-sdk.sendAudioStream(audioChunk);
-
-  
-
-// When finished
-
-sdk.leave();
-
 ```
 
-  
+#### Options
+
+- `api_key` (required): Your API key for authentication.
+- `connectionId` (optional): A unique identifier for the connection. If not provided, a UUID will be generated.
+- `contextLength` (optional): An integer between 2 and 5, determining the context length for transcription.
+- `maxReconnectAttempts` (optional): Maximum number of reconnection attempts (default: 5).
+- `reconnectInterval` (optional): Interval between reconnection attempts in milliseconds (default: 5000).
+- `debug` (optional): Enable debug mode for detailed logging (default: false).
+
+### Connecting to the Server
+
+Just before sending audio, initialize the socket connection:
+
+```javascript
+await sdk.initializeSocket();
+```
+
+### Sending Audio
+
+To start sending audio:
+
+1. Call the `start()` method to initialize the audio stream:
+
+   ```javascript
+   sdk.start();
+   ```
+
+2. Send audio chunks as `Buffer` objects:
+
+   ```javascript
+   sdk.sendAudioStream(audioChunk);
+   ```
+
+   Call this method for each audio chunk you want to send.
+
+### Handling Responses
+
+Set up callbacks to handle transcriptions and generated questions:
+
+```javascript
+sdk.onTranscription((transcription) => {
+  console.log('Transcription:', transcription);
+});
+
+sdk.onQuestion((data) => {
+  console.log('Transcript:', data.transcript);
+  console.log('Questions:', data.questions);
+});
+```
+
+### Error Handling
+
+Set up an error callback to handle any errors:
+
+```javascript
+sdk.onError((error) => {
+  console.error('Error:', error);
+});
+```
+
+### Stopping Transcription
+
+To stop the transcription process:
+
+```javascript
+sdk.stop();
+```
 
 ## API Reference
 
-  
+### `AudioTranscriptionSDK`
 
-### Constructor
+#### Constructor
 
-  
+- `new AudioTranscriptionSDK(options)`: Creates a new instance of the SDK.
 
-```javascript
+#### Methods
 
-new  AudioTranscriptionSDK(options)
-
-```
-
-  
-
--  `options.api_key` (string, required): Your Klarity STT API key
-
--  `options.connectionId` (string, optional): Custom connection ID (UUID v4 generated if not provided)
-
--  `options.contextLength` (number, required): Integer between 2 and 5, determines the context window for transcription
-
--  `options.maxReconnectAttempts` (number, optional): Maximum number of reconnection attempts (default: 5)
-
--  `options.reconnectInterval` (number, optional): Interval between reconnection attempts in milliseconds (default: 5000)
-
--  `options.debug` (boolean, optional): Enable debug logging (default: false)
-
-  
-
-### Methods
-
-  
-
--  `init()`: Initialize the audio stream and prepare for transcription
-
--  `sendAudioStream(audioChunk)`: Send an audio chunk (Buffer) for transcription
-
--  `stopListening()`: Stop listening and disconnect the socket
-
--  `leave()`: Leave the conversation and clean up resources
-
--  `onTranscription(callback)`: Set callback for receiving transcriptions
-
--  `onQuestion(callback)`: Set callback for receiving generated questions
-
--  `onError(callback)`: Set callback for error handling
-
--  `isConnected()`: Check if the SDK is currently connected
-
--  `setDebugMode(boolean)`: Enable or disable debug mode
-
-  
+- `initializeSocket()`: Initializes the WebSocket connection.
+- `start()`: Prepares the SDK for receiving audio chunks.
+- `sendAudioStream(chunk)`: Sends an audio chunk for processing.
+- `stop()`: Stops the transcription process and disconnects.
+- `onTranscription(callback)`: Sets the callback for receiving transcriptions.
+- `onQuestion(callback)`: Sets the callback for receiving generated questions.
+- `onError(callback)`: Sets the callback for error handling.
+- `isConnected()`: Returns the current connection status.
+- `setDebugMode(debug)`: Enables or disables debug mode.
 
 ## Advanced Usage
 
-  
+### Debug Mode
 
-### Long-running Audio Streams
-
-  
-
-The SDK is designed to handle long-running audio streams efficiently. It manages audio buffers internally, sending chunks to the server at regular intervals to ensure consistent performance.
-
-  
-
-## Error Handling
-
-  
-
-The SDK provides comprehensive error handling. Make sure to set up an error callback to catch and handle any issues:
-
-  
+Enable debug mode for detailed logging:
 
 ```javascript
-
-sdk.onError((error) => {
-
-console.error('An error occurred:', error);
-
-// Implement your error handling logic here
-
-});
-
+sdk.setDebugMode(true);
 ```
-
-  
-
-## Best Practices
-
-  
-
-1. Always initialize the SDK with `init()` before sending audio data.
-
-2. Send audio data in small chunks for optimal performance.
-
-3. Use the `onTranscription` and `onQuestion` callbacks to process results in real-time.
-
-4. Call `leave()` when you're done to properly clean up resources.
-
-  
 
 ## Troubleshooting
 
-  
-
-If you encounter issues:
-
-  
-
-1. Enable debug mode to get more detailed logs.
-
-2. Ensure you're using a valid API key.
-
-3. Check your network connection and firewall settings.
-
-4. Verify that the audio data you're sending is in a supported format.
-
+1. **Connection Issues**: Ensure your API key is correct and that you have a stable internet connection.
+2. **Audio Not Transcribing**: Verify that you're sending valid audio chunks as `Buffer` objects.
+3. **High Latency**: Consider adjusting the `contextLength` for a balance between accuracy and speed.
