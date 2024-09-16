@@ -74,7 +74,7 @@ const sdk = new KlaritySDK({
 Just before sending audio, initialize the socket connection:
 
 ```javascript
-await sdk.initializeSocket();
+await sdk.establishConnection();
 ```
 
 ### Sending Audio
