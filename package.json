@@ -1,6 +1,6 @@
 {
   "name": "klarity-stt",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A secure and rohbust SDK for audio transcription.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -29,7 +29,7 @@
     "type": "git",
     "url": "https://github.com/KobaltSoft/klarity-sdk.git"
   },
-  "homepage": "https://github.com/KobaltSoft/klarity-sdk",
+  "homepage": "https://www.klarity.in",
   "devDependencies": {
     "@types/node": "^22.5.5"
   }
