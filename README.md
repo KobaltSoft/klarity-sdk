@@ -1,315 +1,121 @@
+# Klarity
 
-  
+<p align="center">
+  <img src="https://www.klarity.in/logo.png" alt="Klarity Logo" width="150" height="150">
+</p>
 
-# Klarity STT SDK
+<p align="center">
+  <strong>Blazing-Fast Speech Recognition with Precision Text Mining</strong>
+</p>
 
-  
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#quick-start">Quick Start</a> •
+  <a href="#api-reference">API Reference</a> •
+  <a href="#getting-api-access">API Access</a>
+</p>
 
-A powerful Node.js Speech-to-Text SDK with real-time transcription and advanced features.
+---
 
-  
+## 🌟 Features
 
-## Contact for API Access
+- 🎙️ Real-time audio transcription
+- ❓ Automatic question generation based on transcribed content
+- 🔇 Customizable silence detection for speech segmentation
+- 🔄 Support for replaceable words/objects
+- 🐞 Comprehensive error handling and debugging options
 
-  
-
-For API key requests or further assistance, please contact the Klarity.
-
-  
-
-Email: admin@klarity.in
-
-  
-  
-
-## Features
-
-  
-
-  
-
-- Real-time audio transcription from streaming audio input
-
-  
-
-  
-
-- Configurable context length for improved transcription accuracy
-
-  
-
-  
-
-- Text mining capabilities
-
-  
-
-  
-
-- Flexible error handling and callback system
-
-  
-
-  
-
-- Support for long-running audio streams
-
-  
-
-  
-
-- Efficient audio buffer management
-
-  
-
-## Installation
-
-  
-
-To install the Audio Transcription SDK, use npm:
-
-  
+## 🚀 Installation
 
 ```bash
-
-npm  install  klarity-stt
-
+npm install klarity-stt
 ```
 
-  
+## 🏁 Quick Start
 
-## Usage
-
-  
-
-### Initialization
-
-  
-
-First, import and initialize the SDK:
-
-  
+Here's a basic example of how to use the Klarity SDK:
 
 ```javascript
+const Klarity = require('klarity-stt');
 
-const  KlaritySDK  =  require('klarity-stt');
-
-  
-
-const  sdk  =  new  KlaritySDK({
-
-api_key: 'YOUR_API_KEY',
-
-contextLength: 5,
-
+const klarity = new Klarity({
+  api_key: 'your_api_key_here',
 });
 
+klarity.establishConnection({ replaceableObjects: [] })
+  .then(() => {
+    console.log('🎉 Connected to the Klarity service');
+
+    // Assuming you have an audio stream
+    const audioStream = getAudioStream();
+    klarity.sendAudioStream(audioStream);
+
+    klarity.onTranscription((transcription) => {
+      console.log('📝 Transcription:', transcription);
+    });
+
+    klarity.onQuestion((data) => {
+      console.log('📝 Transcript:', data.transcript);
+      console.log('❓ Questions:', data.questions);
+    });
+
+    klarity.onError((error) => {
+      console.error('❌ Error:', error);
+    });
+
+    klarity.onStreamEnd(() => {
+      console.log('🏁 Audio stream ended');
+    });
+  })
+  .catch((error) => {
+    console.error('❌ Failed to connect:', error);
+  });
 ```
 
-  
+## 📚 API Reference
 
-#### Options
-
-  
-
--  `api_key` (required): Your API key for authentication.
-
--  `connectionId` (optional): A unique identifier for the connection. If not provided, a UUID will be generated.
-
--  `contextLength` (optional): An integer between 2 and 5, determining the context length for transcription.
-
--  `maxReconnectAttempts` (optional): Maximum number of reconnection attempts (default: 5).
-
--  `reconnectInterval` (optional): Interval between reconnection attempts in milliseconds (default: 5000).
-
--  `debug` (optional): Enable debug mode for detailed logging (default: false).
-
-  
-
-### Connecting to the Server
-
-  
-
-Just before sending audio, initialize the socket connection:
-
-  
-
-```javascript
-
-await sdk.establishConnection();
-
-```
-
-  
-
-### Sending Audio
-
-  
-
-To start sending audio:
-
-  
-
-1. Call the `start()` method to initialize the audio stream:
-
-  
-
-```javascript
-
-sdk.start();
-
-```
-
-  
-
-2. Send audio chunks as `Buffer` objects:
-
-  
-
-```javascript
-
-sdk.sendAudioStream(audioChunk);
-
-```
-
-  
-
-Call this method for each audio chunk you want to send.
-
-  
-
-### Handling Responses
-
-  
-
-Set up callbacks to handle transcriptions and generated questions:
-
-  
-
-```javascript
-
-sdk.onTranscription((transcription) => {
-
-console.log('Transcription:', transcription);
-
-});
-
-  
-
-sdk.onQuestion((data) => {
-
-console.log('Transcript:', data.transcript);
-
-console.log('Questions:', data.questions);
-
-});
-
-```
-
-  
-
-### Error Handling
-
-  
-
-Set up an error callback to handle any errors:
-
-  
-
-```javascript
-
-sdk.onError((error) => {
-
-console.error('Error:', error);
-
-});
-
-```
-
-  
-
-### Stopping Transcription
-
-  
-
-To stop the transcription process:
-
-  
-
-```javascript
-
-sdk.stop();
-
-```
-
-  
-
-## API Reference
-
-  
-
-### `AudioTranscriptionSDK`
-
-  
+### `Klarity`
 
 #### Constructor
 
-  
+```javascript
+new Klarity(options: KlarityOptions)
+```
 
--  `new AudioTranscriptionSDK(options)`: Creates a new instance of the SDK.
-
-  
+| Option | Type | Description | Required |
+|--------|------|-------------|----------|
+| `api_key` | `string` | Your API key for authentication | Yes |
+| `connectionId` | `string` | A unique identifier for the connection | No |
+| `debug` | `boolean` | Enable debug mode (default: `false`) | No |
+| `pauseDuration` | `number` | Duration of silence to detect speech segments (default: `0.6` seconds) | No |
 
 #### Methods
 
-  
+| Method | Description |
+|--------|-------------|
+| `establishConnection(options: { replaceableObjects?: any[] }): Promise<void>` | Establishes a connection to the Klarity service |
+| `sendAudioStream(audioStream: NodeJS.ReadableStream): void` | Sends an audio stream for transcription |
+| `onTranscription(callback: (transcription: string) => void): void` | Sets a callback to receive transcriptions |
+| `onQuestion(callback: (data: QuestionData) => void): void` | Sets a callback to receive generated questions |
+| `onError(callback: (error: Error) => void): void` | Sets a callback to handle errors |
+| `onStreamEnd(callback: (data: any) => void): void` | Sets a callback to be called when the audio stream ends |
+| `isConnected(): boolean` | Checks if the SDK is currently connected to the service |
+| `setDebugMode(debug: boolean): void` | Enables or disables debug mode |
+| `stop(): void` | Stops the audio transcription process |
 
--  `establishConnection()`: Establish server connection.
+## 🔑 Getting API Access
 
--  `start()`: Prepares the SDK for receiving audio chunks.
+To use the Klarity SDK, you need to obtain an API key. Please contact our team at [admin@klarity.in](mailto:admin@klarity.in) for API access and further information about pricing and usage limits.
 
--  `sendAudioStream(chunk)`: Sends an audio chunk for processing.
+## 🆘 Support
 
--  `stop()`: Stops the transcription process and disconnects.
+If you encounter any issues or have questions about the Klarity SDK, please don't hesitate to:
 
--  `onTranscription(callback)`: Sets the callback for receiving transcriptions.
+- Open an issue on our [GitHub repository](https://github.com/KobaltSoft/klarity-sdk)
 
--  `onQuestion(callback)`: Sets the callback for receiving generated questions.
+---
 
--  `onError(callback)`: Sets the callback for error handling.
-
--  `isConnected()`: Returns the current connection status.
-
--  `setDebugMode(debug)`: Enables or disables debug mode.
-
-  
-
-## Advanced Usage
-
-  
-
-### Debug Mode
-
-  
-
-Enable debug mode for detailed logging:
-
-  
-
-```javascript
-
-sdk.setDebugMode(true);
-
-```
-
-  
-
-## Troubleshooting
-
-  
-
-1.  **Connection Issues**: Ensure your API key is correct and that you have a stable internet connection.
-
-2.  **Audio Not Transcribing**: Verify that you're sending valid audio chunks as `Buffer` objects.
-
-3.  **High Latency**: Consider adjusting the `contextLength` for a balance between accuracy and speed.
+<p align="center">
+  Made with ❤️ by the Kobalt 
+</p>
