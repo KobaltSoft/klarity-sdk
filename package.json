@@ -1,7 +1,7 @@
 {
-  "name": "klarity-stt",
-  "version": "1.2.4",
-  "description": "A secure and rohbust SDK for audio transcription.",
+  "name": "klarisent-stt",
+  "version": "1.0.0",
+  "description": "Klarisent speech to text",
   "main": "index.js",
   "types": "index.d.ts",
   "directories": {
